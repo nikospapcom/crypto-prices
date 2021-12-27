@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function Home() {
   const [coins, setCoins] = useState<any>([]);
@@ -14,16 +15,14 @@ function Home() {
   };
 
   useEffect(() => {
-    
     fetchData();
   }, []);
-
 
   return (
     <div className="header">
       <h1>Home</h1>
       {isLoading ? 'Loading' : (coins.map((item: any) => (
-        <div key={item.id}>{item.id}</div>
+        <div key={item.id}><Link to={`/coin/${item.id}`}>{item.id}</Link></div>
       )))}
     </div>
   );
