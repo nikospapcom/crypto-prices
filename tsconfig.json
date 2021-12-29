@@ -20,7 +20,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "types": [
-      "@types/react-router-dom"
+      "@types/react-router-dom",
+      "@types/react-vis"
     ]
   },
   "include": [
