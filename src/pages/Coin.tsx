@@ -4,7 +4,13 @@ import { getRequest } from "../utils/axiosClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
-import { CoinChart, CoinSidebar, CoinSocial, CoinLinks } from "../components";
+import {
+  CoinChart,
+  CoinSidebar,
+  CoinSocial,
+  CoinLinks,
+  CoinRepos,
+} from "../components";
 
 function Coin() {
   const [coin, setCoin] = useState<any>([]);
@@ -53,6 +59,7 @@ function Coin() {
               </div>
               <div>
                 <div className="h-2 bg-gray-700 rounded w-40"></div>
+                <div className="h-2 bg-gray-700 rounded w-40 mt-2"></div>
                 <div className="h-2 bg-gray-700 rounded w-40 mt-2"></div>
               </div>
             </div>
@@ -120,6 +127,10 @@ function Coin() {
                 coin.links?.twitter_screen_name && (
                   <CoinSocial data={coin}></CoinSocial>
                 )}
+              {(coin.links?.repos_url?.github.length ||
+                coin.links?.repos_url?.bitbucket.length) && (
+                <CoinRepos data={coin}></CoinRepos>
+              )}
             </div>
           </div>
           <div className="flex justify-between pb-4">
