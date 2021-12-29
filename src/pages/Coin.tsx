@@ -2,10 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getRequest } from "../utils/axiosClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowUp,
-  faArrowDown,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 import { CoinChart, CoinSidebar, CoinSocial, CoinLinks } from "../components";
 
@@ -33,7 +30,6 @@ function Coin() {
       marketData.push({ x: new Date(data.prices[i][0]), y: data.prices[i][1] });
     }
     setMarketChart(marketData);
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -45,10 +41,46 @@ function Coin() {
     fetchMarketChart(days);
   };
 
+  const Skeleton = () => {
+    return (
+      <div className="w-full mx-auto">
+        <div className="animate-pulse flex space-x-4">
+          <div className="flex-1 space-y-6 py-1">
+            <div className="h-8 bg-gray-700 rounded mt-4"></div>
+            <div className="flex justify-between">
+              <div>
+                <div className="h-4 bg-gray-700 rounded w-40"></div>
+              </div>
+              <div>
+                <div className="h-2 bg-gray-700 rounded w-40"></div>
+                <div className="h-2 bg-gray-700 rounded w-40 mt-2"></div>
+              </div>
+            </div>
+            <div className="flex justify-between pb-4">
+              <div className="w-4/5 pr-8">
+                <div className="h-80 bg-gray-700 rounded"></div>
+                <div className="space-y-3">
+                  <div className="h-2 bg-gray-700 rounded"></div>
+                  <div className="h-2 bg-gray-700 rounded"></div>
+                  <div className="h-2 bg-gray-700 rounded"></div>
+                  <div className="h-2 bg-gray-700 rounded"></div>
+                  <div className="h-2 bg-gray-700 rounded"></div>
+                </div>
+              </div>
+              <div className="w-1/5">
+                <div className="h-80 bg-gray-700 rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="header">
       {isLoading ? (
-        "LOADING DATA"
+        <Skeleton />
       ) : (
         <div>
           <div className="flex justify-between py-6 mb-6 border-b border-gray-300/10">
