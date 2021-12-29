@@ -1,8 +1,20 @@
+import { useState, useEffect } from "react";
 interface IProps {
   data: any;
 }
 
 const CoinSidebar: React.FC<IProps> = ({ data }) => {
+  const [athDate, setAthDate] = useState<string>("");
+  const [atlDate, setAtlDate] = useState<string>("");
+
+  useEffect(() => {
+    const formatAthDate = new Date(data.market_data?.ath_date.usd);
+    setAthDate(formatAthDate.toLocaleDateString());
+
+    const formatAtlDate = new Date(data.market_data?.atl_date.usd);
+    setAtlDate(formatAtlDate.toLocaleDateString());
+  }, []);
+
   return (
     <div className="p-4 bg-gray-800 rounded text-gray-400">
     <span className="text-xl font-medium">
@@ -76,7 +88,7 @@ const CoinSidebar: React.FC<IProps> = ({ data }) => {
         <div className="text-white text-right">
           {data.market_data?.ath.usd.toFixed(2)}$ /{" "}
           <span className="block">
-            {data.market_data?.ath_date.usd}
+            {athDate}
           </span>
         </div>
       </div>
@@ -85,7 +97,7 @@ const CoinSidebar: React.FC<IProps> = ({ data }) => {
         <div className="text-white text-right">
           {data.market_data?.atl.usd.toFixed(2)}$ /{" "}
           <span className="block">
-            {data.market_data?.atl_date.usd}
+            {atlDate}
           </span>
         </div>
       </div>
