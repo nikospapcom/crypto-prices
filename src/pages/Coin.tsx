@@ -3,21 +3,11 @@ import { useParams, Link } from "react-router-dom";
 import { getRequest } from "../utils/axiosClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faFacebook,
-  faTwitter,
-  faReddit,
-} from "@fortawesome/free-brands-svg-icons";
-import {
-  faLink,
   faArrowUp,
   faArrowDown,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  FlexibleXYPlot,
-  LineSeries,
-  XAxis,
-  YAxis
-} from "react-vis";
+
+import { CoinChart, CoinSidebar, CoinSocial, CoinLinks } from "../components";
 
 function Coin() {
   const [coin, setCoin] = useState<any>([]);
@@ -33,9 +23,9 @@ function Coin() {
     setIsLoading(false);
   };
 
-  const fetchMarketChart = async () => {
+  const fetchMarketChart = async (days: number | string) => {
     const response = await getRequest(
-      `coins/${id}/market_chart?vs_currency=usd&days=1`
+      `coins/${id}/market_chart?vs_currency=usd&days=${days}`
     );
     const { data } = response;
     let marketData = [];
@@ -48,8 +38,12 @@ function Coin() {
 
   useEffect(() => {
     fetchData();
-    fetchMarketChart();
+    fetchMarketChart(1);
   }, []);
+
+  const changeDateRange = (days: number | string) => {
+    fetchMarketChart(days);
+  };
 
   return (
     <div className="header">
@@ -87,95 +81,12 @@ function Coin() {
               {coin.links?.homepage.length &&
                 coin.links?.blockchain_site.length &&
                 coin.links?.official_forum_url && (
-                  <div className="mb-2">
-                    <span className="text-xs text-gray-400">
-                      Contact links:{" "}
-                    </span>
-                    {coin.links?.homepage.map((item: any) => {
-                      return (
-                        item !== "" && (
-                          <a
-                            href={item}
-                            key={item}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-block mr-2"
-                          >
-                            <FontAwesomeIcon icon={faLink} />
-                          </a>
-                        )
-                      );
-                    })}
-                    {coin.links?.blockchain_site.map((item: any) => {
-                      return (
-                        item !== "" && (
-                          <a
-                            href={item}
-                            key={item}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-block mr-2"
-                          >
-                            <FontAwesomeIcon icon={faLink} />
-                          </a>
-                        )
-                      );
-                    })}
-                    {coin.links?.official_forum_url.map((item: any) => {
-                      return (
-                        item !== "" && (
-                          <a
-                            href={item}
-                            key={item}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-block mr-2"
-                          >
-                            <FontAwesomeIcon icon={faLink} />
-                          </a>
-                        )
-                      );
-                    })}
-                  </div>
+                  <CoinLinks data={coin}></CoinLinks>
                 )}
               {coin.links?.facebook_username &&
                 coin.links?.twitter_screen_name &&
                 coin.links?.twitter_screen_name && (
-                  <div className="mb-2">
-                    <span className="text-xs text-gray-400">
-                      Social links:{" "}
-                    </span>
-                    {coin.links?.facebook_username && (
-                      <a
-                        href={`https://www.facebook.com/${coin.links?.facebook_username}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-block mr-2"
-                      >
-                        <FontAwesomeIcon icon={faFacebook} />
-                      </a>
-                    )}
-                    {coin.links?.twitter_screen_name && (
-                      <a
-                        href={`https://www.twitter.com/${coin.links?.twitter_screen_name}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-block mr-2"
-                      >
-                        <FontAwesomeIcon icon={faTwitter} />
-                      </a>
-                    )}
-                    {coin.links?.twitter_screen_name && (
-                      <a
-                        href={coin.links?.subreddit_url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-block mr-2"
-                      >
-                        <FontAwesomeIcon icon={faReddit} />
-                      </a>
-                    )}
-                  </div>
+                  <CoinSocial data={coin}></CoinSocial>
                 )}
             </div>
           </div>
@@ -199,26 +110,51 @@ function Coin() {
                 {"%"}
               </span>
               <div className="my-4">
-                <FlexibleXYPlot
-                  height={400}
-                  style={{ backgroundColor: "#1F2937" }}
-                  xType="time-utc"
-                >
-                  <YAxis
-                    tickFormat={(v) => `${v.toString().slice(0, 2)}K`}
-                    tickPadding={0}
-                    style={{ fill: "#9CA3AF", fontSize: "12px" }}
-                  ></YAxis>
-                  <XAxis
-                    title="Date"
-                    style={{ fill: "#9CA3AF", fontSize: "12px" }}
-                  ></XAxis>
-                  <LineSeries
-                    data={marketChart}
-                    color="#3861fb"
-                    style={{ fill: "none" }}
-                  />
-                </FlexibleXYPlot>
+                <div className="mb-4">
+                  <button
+                    type="button"
+                    className="text-xs px-2 py-1 mr-1 bg-gray-800 rounded text-gray-400"
+                    onClick={() => changeDateRange(1)}
+                  >
+                    1D
+                  </button>
+                  <button
+                    type="button"
+                    className="text-xs px-2 py-1 mr-1 bg-gray-800 rounded text-gray-400"
+                    onClick={() => changeDateRange(14)}
+                  >
+                    14D
+                  </button>
+                  <button
+                    type="button"
+                    className="text-xs px-2 py-1 mr-1 bg-gray-800 rounded text-gray-400"
+                    onClick={() => changeDateRange(30)}
+                  >
+                    1Μ
+                  </button>
+                  <button
+                    type="button"
+                    className="text-xs px-2 py-1 mr-1 bg-gray-800 rounded text-gray-400"
+                    onClick={() => changeDateRange(90)}
+                  >
+                    3Μ
+                  </button>
+                  <button
+                    type="button"
+                    className="text-xs px-2 py-1 mr-1 bg-gray-800 rounded text-gray-400"
+                    onClick={() => changeDateRange(365)}
+                  >
+                    1Υ
+                  </button>
+                  <button
+                    type="button"
+                    className="text-xs px-2 py-1 mr-1 bg-gray-800 rounded text-gray-400"
+                    onClick={() => changeDateRange("max")}
+                  >
+                    MAX
+                  </button>
+                </div>
+                <CoinChart data={marketChart}></CoinChart>
               </div>
               <div className="text-sm text-gray-500 my-4">
                 Description:{" "}
@@ -228,93 +164,7 @@ function Coin() {
               </div>
             </div>
             <div className="w-1/5">
-              <div className="p-4 bg-gray-800 rounded text-gray-400">
-                <span className="text-xl font-medium">
-                  {coin.name} Price Statistics
-                </span>
-                <div className="mt-2 text-sm">
-                  Price change percentage:
-                  <div className="flex justify-between border-t border-gray-300/10 pt-2 mt-2">
-                    <div>24 hours</div>
-                    <div className="text-white">
-                      {coin.market_data?.price_change_percentage_24h.toFixed(2)}
-                      %
-                    </div>
-                  </div>
-                  <div className="flex justify-between border-t border-gray-300/10 pt-2 mt-2">
-                    <div>7 days</div>
-                    <div className="text-white">
-                      {coin.market_data?.price_change_percentage_7d.toFixed(2)}%
-                    </div>
-                  </div>
-                  <div className="flex justify-between border-t border-gray-300/10 pt-2 mt-2">
-                    <div>14 days</div>
-                    <div className="text-white">
-                      {coin.market_data?.price_change_percentage_14d.toFixed(2)}
-                      %
-                    </div>
-                  </div>
-                  <div className="flex justify-between border-t border-gray-300/10 pt-2 mt-2">
-                    <div>1 month</div>
-                    <div className="text-white">
-                      {coin.market_data?.price_change_percentage_30d.toFixed(2)}
-                      %
-                    </div>
-                  </div>
-                  <div className="flex justify-between border-t border-gray-300/10 pt-2 mt-2">
-                    <div>2 months</div>
-                    <div className="text-white">
-                      {coin.market_data?.price_change_percentage_60d.toFixed(2)}
-                      %
-                    </div>
-                  </div>
-                  <div className="flex justify-between border-t border-gray-300/10 pt-2 mt-2">
-                    <div>200 days</div>
-                    <div className="text-white">
-                      {coin.market_data?.price_change_percentage_200d.toFixed(
-                        2
-                      )}
-                      %
-                    </div>
-                  </div>
-                  <div className="flex justify-between border-t border-gray-300/10 pt-2 mt-2">
-                    <div>1 year</div>
-                    <div className="text-white">
-                      {coin.market_data?.price_change_percentage_1y.toFixed(2)}%
-                    </div>
-                  </div>
-                  <div className="flex justify-between border-t border-gray-300/10 pt-2 mt-2">
-                    <div>24 High</div>
-                    <div className="text-white">
-                      {coin.market_data?.high_24h.usd.toFixed(2)}$
-                    </div>
-                  </div>
-                  <div className="flex justify-between border-t border-gray-300/10 pt-2 mt-2">
-                    <div>24 Low</div>
-                    <div className="text-white">
-                      {coin.market_data?.low_24h.usd.toFixed(2)}$
-                    </div>
-                  </div>
-                  <div className="flex justify-between border-t border-gray-300/10 pt-2 mt-2">
-                    <div>ATH</div>
-                    <div className="text-white text-right">
-                      {coin.market_data?.ath.usd.toFixed(2)}$ /{" "}
-                      <span className="block">
-                        {coin.market_data?.ath_date.usd}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between border-t border-gray-300/10 pt-2 mt-2">
-                    <div>ATL</div>
-                    <div className="text-white text-right">
-                      {coin.market_data?.atl.usd.toFixed(2)}$ /{" "}
-                      <span className="block">
-                        {coin.market_data?.atl_date.usd}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <CoinSidebar data={coin}></CoinSidebar>
             </div>
           </div>
         </div>
