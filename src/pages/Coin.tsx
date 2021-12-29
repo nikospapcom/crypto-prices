@@ -41,6 +41,7 @@ function Coin() {
   useEffect(() => {
     fetchData();
     fetchMarketChart(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const changeDateRange = (days: number | string) => {

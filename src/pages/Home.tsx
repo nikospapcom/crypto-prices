@@ -3,25 +3,25 @@ import { getRequest } from "../utils/axiosClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
-import {
-  CoinsTable
-} from "../components";
+import { CoinsTable } from "../components";
 
 function Home() {
   const [coins, setCoins] = useState<any>([]);
   const [page, setPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchData = async () => {
-    const response = await getRequest(
-      `coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&sparkline=false&page=${page}`
-    );
-    const { data } = response;
-    setIsLoading(false);
-    setCoins(data);
-  };
+
 
   useEffect(() => {
+    const fetchData = async () => {
+      const response = await getRequest(
+        `coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&sparkline=false&page=${page}`
+      );
+      const { data } = response;
+      setIsLoading(false);
+      setCoins(data);
+    };
+
     fetchData();
   }, [page]);
 
