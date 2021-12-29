@@ -13,9 +13,10 @@ const CoinChart: React.FC<IProps> = ({ data }) => {
         xType="time-utc"
       >
         <YAxis
-          tickFormat={(v) => `${v.toString().slice(0, 2)}K`}
+          tickFormat={(v) => `${v.toString().slice(0, 5)}`}
           tickPadding={0}
-          style={{ fill: "#9CA3AF", fontSize: "12px" }}
+          left={5}
+          style={{ fill: "#9CA3AF", fontSize: "11px" }}
         ></YAxis>
         <XAxis
           title="Date"

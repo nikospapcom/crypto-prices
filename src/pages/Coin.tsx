@@ -189,7 +189,6 @@ function Coin() {
                 <CoinChart data={marketChart}></CoinChart>
               </div>
               <div className="text-sm text-gray-500 my-4">
-                Description:{" "}
                 <span
                   dangerouslySetInnerHTML={{ __html: coin.description?.en }}
                 ></span>

@@ -1,13 +1,18 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { getRequest } from '../utils/axiosClient';
+import { useState, useEffect } from "react";
+import { useSearchParams, useLocation, Link } from "react-router-dom";
+import { getRequest } from "../utils/axiosClient";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 function Home() {
   const [coins, setCoins] = useState<any>([]);
+  const [page, setPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
-    const response = await getRequest('coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&sparkline=false');
+    const response = await getRequest(
+      `coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&sparkline=false&page=${page}`
+    );
     const { data } = response;
     setIsLoading(false);
     setCoins(data);
@@ -15,10 +20,22 @@ function Home() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [page]);
+
+  const nextPage = async () => {
+    let currentPage = page;
+    setPage(++currentPage);
+    setIsLoading(true);
+  };
+
+  const prevPage = async () => {
+    let currentPage = page;
+    setPage(--currentPage);
+    setIsLoading(true);
+  };
 
   const Skeleton = () => {
-    return(
+    return (
       <div className="border border-blue-300/10 shadow rounded-md p-4 w-full mx-auto">
         <div className="animate-pulse flex space-x-4">
           <div className="flex-1 space-y-6 py-1">
@@ -33,13 +50,17 @@ function Home() {
           </div>
         </div>
       </div>
-    )
+    );
   };
 
   return (
     <div>
-      <h1 className="text-center py-6 mb-6 font-medium text-2xl border-b border-gray-300/10">Cryptocurrency Prices</h1>
-      {isLoading ? <Skeleton /> : (
+      <h1 className="text-center py-6 mb-6 font-medium text-2xl border-b border-gray-300/10">
+        Cryptocurrency Prices
+      </h1>
+      {isLoading ? (
+        <Skeleton />
+      ) : (
         <>
           <div className="flex justify-between text-xs">
             <div
@@ -119,15 +140,14 @@ function Home() {
             </div>
           </div>
           {coins.map((item: any) => (
-            <Link 
-              to={`/coin/${item.id}`} 
+            <Link
+              to={`/coin/${item.id}`}
               key={item.id}
               className="flex justify-between text-sm hover:bg-gray-800"
             >
-              <div
-                className="border-b border-blue-300/10 p-4 pl-8 text-gray-300 w-1/5"
-              >
-                {item.name} <span className="uppercase font-medium">({item.symbol})</span>
+              <div className="border-b border-blue-300/10 p-4 pl-8 text-gray-300 w-1/5">
+                {item.name}{" "}
+                <span className="uppercase font-medium">({item.symbol})</span>
               </div>
               <div
                 className="
@@ -142,7 +162,7 @@ function Home() {
                   w-1/5
                 "
               >
-                $ {item.current_price?.toFixed(2)}
+                $ {item.current_price}
               </div>
               <div
                 className="
@@ -157,7 +177,7 @@ function Home() {
                   w-1/5
                 "
               >
-                $ {item.high_24h?.toFixed(2)}
+                $ {item.high_24h}
               </div>
               <div
                 className="
@@ -172,7 +192,7 @@ function Home() {
                   w-1/5
                 "
               >
-                $ {item.low_24h?.toFixed(2)}
+                $ {item.low_24h}
               </div>
               <div
                 className="
@@ -191,6 +211,22 @@ function Home() {
               </div>
             </Link>
           ))}
+          <div className="flex justify-center py-8">
+            <button
+              type="button"
+              className="text-sm px-2 py-1 mr-1 bg-gray-800 rounded text-gray-400"
+              onClick={() => prevPage()}
+            >
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+            <button
+              type="button"
+              className="text-sm px-2 py-1 mr-1 bg-gray-800 rounded text-gray-400"
+              onClick={() => nextPage()}
+            >
+              <FontAwesomeIcon icon={faArrowRight} />
+            </button>
+          </div>
         </>
       )}
     </div>
