@@ -13,7 +13,7 @@ const CoinSidebar: React.FC<IProps> = ({ data }) => {
 
     const formatAtlDate = new Date(data.market_data?.atl_date.usd);
     setAtlDate(formatAtlDate.toLocaleDateString());
-  }, []);
+  }, [data.market_data?.ath_date.usd, data.market_data?.atl_date.usd]);
 
   return (
     <div className="p-4 bg-gray-800 rounded text-gray-400">
