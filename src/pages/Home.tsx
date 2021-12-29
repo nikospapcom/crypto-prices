@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
-import { useSearchParams, useLocation, Link } from "react-router-dom";
 import { getRequest } from "../utils/axiosClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+
+import {
+  CoinsTable
+} from "../components";
 
 function Home() {
   const [coins, setCoins] = useState<any>([]);
@@ -62,155 +65,7 @@ function Home() {
         <Skeleton />
       ) : (
         <>
-          <div className="flex justify-between text-xs">
-            <div
-              className="
-                border-b
-                border-blue-300/10
-                font-medium
-                p-4
-                pl-8
-                pt-4
-                pb-3
-                text-gray-400 text-left
-                w-1/5
-              "
-            >
-              Name
-            </div>
-            <div
-              className="
-                border-b
-                border-blue-300/10
-                font-medium
-                p-4
-                pl-4
-                pt-4
-                pb-3
-                text-gray-400 text-left
-                w-1/5
-              "
-            >
-              Price
-            </div>
-            <div
-              className="
-                border-b
-                border-blue-300/10
-                font-medium
-                p-4
-                pl-4
-                pt-4
-                pb-3
-                text-gray-400 text-left
-                w-1/5
-              "
-            >
-              Highest price
-            </div>
-            <div
-              className="
-                border-b
-                border-blue-300/10
-                font-medium
-                p-4
-                pl-4
-                pt-4
-                pb-3
-                text-gray-400 text-left
-                w-1/5
-              "
-            >
-              Lower price
-            </div>
-            <div
-              className="
-                border-b
-                border-blue-300/10
-                font-medium
-                p-4
-                pr-8
-                pt-4
-                pb-3
-                text-gray-400 text-left
-                w-1/5
-              "
-            >
-              24%
-            </div>
-          </div>
-          {coins.map((item: any) => (
-            <Link
-              to={`/coin/${item.id}`}
-              key={item.id}
-              className="flex justify-between text-sm hover:bg-gray-800"
-            >
-              <div className="border-b border-blue-300/10 p-4 pl-8 text-gray-300 w-1/5">
-                {item.name}{" "}
-                <span className="uppercase font-medium">({item.symbol})</span>
-              </div>
-              <div
-                className="
-                  border-b
-                  border-blue-300/10
-                  font-medium
-                  p-4
-                  pl-4
-                  pt-4
-                  pb-3
-                  text-gray-400 text-left
-                  w-1/5
-                "
-              >
-                $ {item.current_price}
-              </div>
-              <div
-                className="
-                  border-b
-                  border-blue-300/10
-                  font-medium
-                  p-4
-                  pl-4
-                  pt-4
-                  pb-3
-                  text-gray-400 text-left
-                  w-1/5
-                "
-              >
-                $ {item.high_24h}
-              </div>
-              <div
-                className="
-                  border-b
-                  border-blue-300/10
-                  font-medium
-                  p-4
-                  pl-4
-                  pt-4
-                  pb-3
-                  text-gray-400 text-left
-                  w-1/5
-                "
-              >
-                $ {item.low_24h}
-              </div>
-              <div
-                className="
-                  border-b
-                  border-blue-300/10
-                  font-medium
-                  p-4
-                  pr-8
-                  pt-4
-                  pb-3
-                  text-gray-400 text-left
-                  w-1/5
-                "
-              >
-                {item.price_change_percentage_24h?.toFixed(2)} %
-              </div>
-            </Link>
-          ))}
+          <CoinsTable data={coins}></CoinsTable>
           <div className="flex justify-center py-8">
             <button
               type="button"

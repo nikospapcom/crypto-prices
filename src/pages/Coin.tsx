@@ -53,18 +53,18 @@ function Coin() {
         <div className="animate-pulse flex space-x-4">
           <div className="flex-1 space-y-6 py-1">
             <div className="h-8 bg-gray-700 rounded mt-4"></div>
-            <div className="flex justify-between">
+            <div className="md:flex justify-between px-4 md:px-0">
               <div>
-                <div className="h-4 bg-gray-700 rounded w-40"></div>
+                <div className="h-4 bg-gray-700 rounded md:w-40 mb-4"></div>
               </div>
               <div>
-                <div className="h-2 bg-gray-700 rounded w-40"></div>
-                <div className="h-2 bg-gray-700 rounded w-40 mt-2"></div>
-                <div className="h-2 bg-gray-700 rounded w-40 mt-2"></div>
+                <div className="h-2 bg-gray-700 rounded md:w-40"></div>
+                <div className="h-2 bg-gray-700 rounded md:w-40 mt-2"></div>
+                <div className="h-2 bg-gray-700 rounded md:w-40 mt-2"></div>
               </div>
             </div>
-            <div className="flex justify-between pb-4">
-              <div className="w-4/5 pr-8">
+            <div className="md:flex justify-between pb-4 px-4 md:px-0">
+              <div className="md:w-4/5 md:pr-8 mb-4">
                 <div className="h-80 bg-gray-700 rounded"></div>
                 <div className="space-y-3">
                   <div className="h-2 bg-gray-700 rounded"></div>
@@ -74,7 +74,7 @@ function Coin() {
                   <div className="h-2 bg-gray-700 rounded"></div>
                 </div>
               </div>
-              <div className="w-1/5">
+              <div className="md:w-1/5">
                 <div className="h-80 bg-gray-700 rounded"></div>
               </div>
             </div>
@@ -90,8 +90,8 @@ function Coin() {
         <Skeleton />
       ) : (
         <div>
-          <div className="flex justify-between py-6 mb-6 border-b border-gray-300/10">
-            <div></div>
+          <div className="flex justify-between px-4 md:px-0 py-6 mb-6 border-b border-gray-300/10">
+            <div className="hidden md:block"></div>
             <h1 className="text-center font-medium text-2xl">
               {coin.name}{" "}
               <img
@@ -106,13 +106,13 @@ function Coin() {
             </div>
           </div>
 
-          <div className="flex justify-between py-6 mb-6">
+          <div className="md:flex justify-between px-4 md:px-0 py-6 mb-6">
             <div>
               <span className="text-xs text-gray-400">
                 {coin.name} Price{" "}
                 <span className="uppercase">({coin.symbol})</span>
               </span>
-              <div className="font-bold text-2xl">
+              <div className="font-bold text-2xl mb-4">
                 $ {coin.market_data?.current_price?.usd}
               </div>
             </div>
@@ -133,8 +133,8 @@ function Coin() {
               )}
             </div>
           </div>
-          <div className="flex justify-between pb-4">
-            <div className="w-4/5 pr-8">
+          <div className="md:flex justify-between pb-4 px-4 md:px-0">
+            <div className="md:w-4/5 md:pr-8">
               <div className="text-xs text-gray-400">Repuration score</div>
               <span className="mr-2">
                 <FontAwesomeIcon
@@ -205,7 +205,7 @@ function Coin() {
                 ></span>
               </div>
             </div>
-            <div className="w-1/5">
+            <div className="md:w-1/5">
               <CoinSidebar data={coin}></CoinSidebar>
             </div>
           </div>
