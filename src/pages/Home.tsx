@@ -69,6 +69,7 @@ function Home() {
               type="button"
               className="text-sm px-2 py-1 mr-1 bg-gray-800 rounded text-gray-400"
               onClick={() => prevPage()}
+              disabled={page === 1}
             >
               <FontAwesomeIcon icon={faArrowLeft} />
             </button>
@@ -76,6 +77,7 @@ function Home() {
               type="button"
               className="text-sm px-2 py-1 mr-1 bg-gray-800 rounded text-gray-400"
               onClick={() => nextPage()}
+              disabled={page === 250}
             >
               <FontAwesomeIcon icon={faArrowRight} />
             </button>
