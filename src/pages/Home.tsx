@@ -10,8 +10,6 @@ function Home() {
   const [page, setPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(true);
 
-
-
   useEffect(() => {
     const fetchData = async () => {
       const response = await getRequest(
