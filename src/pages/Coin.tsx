@@ -4,6 +4,7 @@ import { getRequest } from "../utils/axiosClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
+import { STATUS_CODE } from "../constants/status";
 import {
   CoinChart,
   CoinSidebar,
@@ -16,14 +17,21 @@ function Coin() {
   const [coin, setCoin] = useState<any>([]);
   const [marketChart, setMarketChart] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const { id } = useParams();
 
   const fetchData = async () => {
     const response = await getRequest(`coins/${id}`);
-    const { data } = response;
-    setCoin(data);
-    setIsLoading(false);
+    if (response.status === STATUS_CODE.OK) {
+      const { data } = response;
+      setIsLoading(false);
+      setCoin(data);
+      setError(false);
+    } else {
+      setIsLoading(false);
+      setError(true);
+    }
   };
 
   const fetchMarketChart = async (days: number | string) => {
@@ -85,13 +93,23 @@ function Coin() {
     );
   };
 
+  const ErrorMessage = () => {
+    return (
+      <div className="border rounded p-4 w-full mx-auto text-red-900 bg-red-400 border-red-900" role="alert"> 
+        <p>Something went wrong, please try again!</p>
+      </div>
+    )
+  }
+
   return (
-    <div className="header">
+    <div className="header pt-10">
       {isLoading ? (
         <Skeleton />
+      ) : error ? (
+        <ErrorMessage />
       ) : (
         <div>
-          <div className="flex justify-between px-4 md:px-0 py-6 mb-6 border-b border-gray-300/10">
+          <div className="flex justify-between px-4 md:px-0 pb-6 mb-6 border-b border-gray-300/10">
             <div className="hidden md:block"></div>
             <h1 className="text-center font-medium text-2xl">
               {coin.name}{" "}

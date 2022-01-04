@@ -3,21 +3,29 @@ import { getRequest } from "../utils/axiosClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
+import { STATUS_CODE } from "../constants/status";
 import { CoinsTable } from "../components";
 
 function Home() {
   const [coins, setCoins] = useState<any>([]);
   const [page, setPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await getRequest(
         `coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&sparkline=false&page=${page}`
       );
-      const { data } = response;
-      setIsLoading(false);
-      setCoins(data);
+      if (response.status === STATUS_CODE.OK) {
+        const { data } = response;
+        setIsLoading(false);
+        setError(false);
+        setCoins(data);
+      } else {
+        setIsLoading(false);
+        setError(true);
+      }
     };
 
     fetchData();
@@ -54,6 +62,14 @@ function Home() {
     );
   };
 
+  const ErrorMessage = () => {
+    return (
+      <div className="border rounded p-4 w-full mx-auto text-red-900 bg-red-400 border-red-900" role="alert"> 
+        <p>Something went wrong, please try again!</p>
+      </div>
+    )
+  }
+
   return (
     <div>
       <h1 className="text-center py-6 mb-6 font-medium text-2xl border-b border-gray-300/10">
@@ -61,6 +77,8 @@ function Home() {
       </h1>
       {isLoading ? (
         <Skeleton />
+      ) : error ? (
+        <ErrorMessage />
       ) : (
         <>
           <CoinsTable data={coins}></CoinsTable>
